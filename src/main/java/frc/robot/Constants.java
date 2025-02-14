@@ -22,9 +22,21 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static final class Elevator {
-    public static final int kElevatorMotorPort = 999; // TODO
+
+  public static final class ElevatorConstants {
+    // TODO: Find all of these values
+    public static final int kElevatorMotorPort = 999; 
+    public static final double highElevatorPosition = 999;
+    public static final double midElevatorPosition = 999;
+    public static final double lowElevatorPosition = 999;
   }
+
+  public static final class ClawConstants {
+    public static final int kClawWheelPort = 999;
+    public static final int kClawRotationPort = 999;
+    
+  }
+
   public static final class DriveConstants {
     public static final boolean kGyroReversed = false;
     // Driving Parameters - Note that these are not the maximum capable speeds of
