@@ -23,6 +23,17 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
 
+  public static final class IntakeConstants{
+    public static final int kIntakeMotorPort = 999;
+    public static final int kIntakeRotationPort = 999;
+    public static final double intakeMotorSpeed = 0; // Domain is [-1,1]
+    public static final double intakeRotationOutwardPosition = 0; // TODO: Find this value
+    public static final double intakeRotationStowedPosition = 0; // TODO: Find this value
+    public static final double intakeRotationHandoffPosition = 0; // TODO: Find this value
+    public static final double intakeRotationForwardLimit = 0; // TODO: Find this value
+    public static final double intakeRotationReverseLimit = 0; // TODO: Find this value
+  }
+
   public static final class ElevatorConstants {
     // TODO: Find all of these values
     public static final int kElevatorMotorPort = 999; 
@@ -34,6 +45,12 @@ public final class Constants {
   public static final class ClawConstants {
     public static final int kClawWheelPort = 999;
     public static final int kClawRotationPort = 999;
+    public static final double clawWheelSpeed = 0; // Domain is [-1,1]
+    public static final double clawRotationStowedPosition = 0; // TODO: Find this value
+    public static final double clawRotationIntakePosition = 0; // TODO: Find this value
+    public static final double clawRotationHandoffPosition = 0; // TODO: Find this value
+    public static final double clawRotationForwardLimit = 0; // TODO: Find this value
+    public static final double clawRotationReverseLimit = 0; // TODO: Find this value
     
   }
 

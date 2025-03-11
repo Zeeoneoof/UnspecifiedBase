@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+/* package frc.robot.subsystems;
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
@@ -21,8 +21,8 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     private final SparkMax m_elevatorMotor = new SparkMax(ElevatorConstants.kElevatorMotorPort, MotorType.kBrushless);
     private final SparkMaxConfig elevatorConfig = new SparkMaxConfig();
-    RelativeEncoder elevatorEncoder;
-    SparkClosedLoopController elevatorPIDController;
+    private RelativeEncoder elevatorEncoder;
+    private SparkClosedLoopController elevatorPIDController;
 
     public final DigitalInput rightLimitSwitch = new DigitalInput(0); // TODO: Wire and correct port
     public final DigitalInput leftLimitSwitch = new DigitalInput(1); // TODO
@@ -84,3 +84,4 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     
 }
+    */
