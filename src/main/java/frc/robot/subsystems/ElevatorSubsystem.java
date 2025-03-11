@@ -1,4 +1,4 @@
-/* package frc.robot.subsystems;
+package frc.robot.subsystems;
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
@@ -19,13 +19,14 @@ import frc.robot.Constants.ElevatorConstants;
 
 public class ElevatorSubsystem extends SubsystemBase {
 
-    private final SparkMax m_elevatorMotor = new SparkMax(ElevatorConstants.kElevatorMotorPort, MotorType.kBrushless);
+    private final SparkMax m_elevatorMotorLeft = new SparkMax(ElevatorConstants.kElevatorMotorPortLeft, MotorType.kBrushless);
+    private final SparkMax m_elevatorMotorRight = new SparkMax(ElevatorConstants.kElevatorMotorPortRight, MotorType.kBrushless);
     private final SparkMaxConfig elevatorConfig = new SparkMaxConfig();
+    private final SparkMaxConfig followerConfig = new SparkMaxConfig();
     private RelativeEncoder elevatorEncoder;
     private SparkClosedLoopController elevatorPIDController;
 
     public final DigitalInput rightLimitSwitch = new DigitalInput(0); // TODO: Wire and correct port
-    public final DigitalInput leftLimitSwitch = new DigitalInput(1); // TODO
  
     public ElevatorSubsystem(){
         // Configure the elevator motor
@@ -44,12 +45,21 @@ public class ElevatorSubsystem extends SubsystemBase {
             .maxVelocity(2)
             .maxAcceleration(1)
             .allowedClosedLoopError(40);
+        
+        followerConfig
+            .voltageCompensation(12)
+            .idleMode(IdleMode.kBrake)
+            .smartCurrentLimit(40);
+
+        followerConfig.follow(ElevatorConstants.kElevatorMotorPortLeft,true);
+            
 
 
-        m_elevatorMotor.configure(elevatorConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
+        m_elevatorMotorLeft.configure(elevatorConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
+        m_elevatorMotorRight.configure(followerConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
 
-        elevatorEncoder = m_elevatorMotor.getEncoder();
-        elevatorPIDController = m_elevatorMotor.getClosedLoopController();
+        elevatorEncoder = m_elevatorMotorLeft.getEncoder();
+        elevatorPIDController = m_elevatorMotorLeft.getClosedLoopController();
 
 
             
@@ -65,7 +75,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public void runWithVoltage(double voltage){
-        m_elevatorMotor.set(voltage);
+        m_elevatorMotorLeft.set(voltage);
     }
 
     public void zeroEncoder(){
@@ -73,15 +83,16 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public void stopMotor(){
-        m_elevatorMotor.stopMotor();
+        m_elevatorMotorLeft.stopMotor();
+        m_elevatorMotorRight.stopMotor();
     }
 
     public double getMotorAmps(){
-        return m_elevatorMotor.getOutputCurrent();
+        return m_elevatorMotorLeft.getOutputCurrent();
     }
 
     
 
     
 }
-    */
+    
