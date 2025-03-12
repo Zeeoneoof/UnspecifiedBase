@@ -1,4 +1,4 @@
-/* package frc.robot.subsystems;
+ package frc.robot.subsystems;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkMax;
@@ -42,6 +42,7 @@ public class ClawSubsystem extends SubsystemBase {
             .voltageCompensation(12.0)
             .idleMode(IdleMode.kBrake)
             .smartCurrentLimit(40);
+            
         
         clawRotationConfig.closedLoop
             .p(0.1)
@@ -96,4 +97,4 @@ public class ClawSubsystem extends SubsystemBase {
 
     
 }
-    */
+    

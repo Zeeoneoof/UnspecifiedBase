@@ -31,6 +31,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.io.IOException;
 
 import org.json.simple.parser.ParseException;
+import org.littletonrobotics.junction.AutoLog;
+import org.littletonrobotics.junction.AutoLogOutput;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
@@ -65,7 +67,7 @@ public class DriveSubsystem extends SubsystemBase {
   // Odometry class for tracking robot pose
   SwerveDrivePoseEstimator m_odometry = new SwerveDrivePoseEstimator(
       DriveConstants.kDriveKinematics,
-      Rotation2d.fromDegrees(m_gyro.getYaw()).unaryMinus(),
+      Rotation2d.fromDegrees(m_gyro.getAngle()).unaryMinus(),
       // Swap init pose with something later
       new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
@@ -116,7 +118,7 @@ public class DriveSubsystem extends SubsystemBase {
   public void periodic() {
     // Update the odometry in the periodic block
     m_odometry.update(
-        Rotation2d.fromDegrees(m_gyro.getYaw()).unaryMinus(),
+        Rotation2d.fromDegrees(m_gyro.getAngle()).unaryMinus(),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -130,7 +132,9 @@ public class DriveSubsystem extends SubsystemBase {
    *
    * @return The pose.
    */
+  @AutoLogOutput(key = "Odometry/Pose")
   public Pose2d getPose() {
+    
     return m_odometry.getEstimatedPosition();
   }
 
@@ -141,7 +145,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(
-        Rotation2d.fromDegrees(m_gyro.getYaw()).unaryMinus(),
+        Rotation2d.fromDegrees(m_gyro.getAngle()).unaryMinus(),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -169,7 +173,7 @@ public class DriveSubsystem extends SubsystemBase {
     var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
         fieldRelative
             ? ChassisSpeeds.discretize(ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered,
-                Rotation2d.fromDegrees(m_gyro.getYaw()).unaryMinus()), 0.02)
+                Rotation2d.fromDegrees(m_gyro.getAngle()).unaryMinus()), 0.02)
             : ChassisSpeeds.discretize(new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered), 0.02));
     SwerveDriveKinematics.desaturateWheelSpeeds(
         swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
@@ -242,7 +246,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return the robot's heading in degrees, from -180 to 180
    */
   public double getHeading() {
-    return Rotation2d.fromDegrees(m_gyro.getYaw()).getDegrees();
+    return Rotation2d.fromDegrees(m_gyro.getAngle()).getDegrees();
   }
 
   /**

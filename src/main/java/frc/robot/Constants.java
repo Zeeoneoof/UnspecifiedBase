@@ -36,11 +36,11 @@ public final class Constants {
 
   public static final class ElevatorConstants {
     // TODO: Find all of these values
-    public static final int kElevatorMotorPortLeft = 999; 
-    public static final int kElevatorMotorPortRight = 999;
+    public static final int kElevatorMotorPortLeft = 13; 
+    public static final int kElevatorMotorPortRight = 14;
     public static final double highElevatorPosition = 999;
     public static final double midElevatorPosition = 999;
-    public static final double lowElevatorPosition = 999;
+    public static final double lowElevatorPosition = 0;
   }
 
   public static final class ClawConstants {
