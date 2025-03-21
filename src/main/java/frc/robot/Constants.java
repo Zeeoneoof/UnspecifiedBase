@@ -23,35 +23,39 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
 
-  public static final class IntakeConstants{
-    public static final int kIntakeMotorPort = 999;
-    public static final int kIntakeRotationPort = 999;
-    public static final double intakeMotorSpeed = 0; // Domain is [-1,1]
-    public static final double intakeRotationOutwardPosition = 0; // TODO: Find this value
-    public static final double intakeRotationStowedPosition = 0; // TODO: Find this value
-    public static final double intakeRotationHandoffPosition = 0; // TODO: Find this value
-    public static final double intakeRotationForwardLimit = 0; // TODO: Find this value
-    public static final double intakeRotationReverseLimit = 0; // TODO: Find this value
-  }
-
   public static final class ElevatorConstants {
-    // TODO: Find all of these values
+    // CAN IDs
     public static final int kElevatorMotorPortLeft = 13; 
     public static final int kElevatorMotorPortRight = 14;
-    public static final double highElevatorPosition = 999;
-    public static final double midElevatorPosition = 999;
-    public static final double lowElevatorPosition = 0;
+
+    // Elevator encoder position for coral
+    public static final double coralHighElevatorPosition = 77;
+    public static final double coralMidElevatorPosition = 51.1;
+    public static final double coralLowElevatorPosition = 34.7;
+    public static final double troughElevatorPosition = 20;
+    public static final double coralIntakeElevatorPosition = 19.5;
+
+    // Elevator encoder positions for algae
+    public static final double bargeElevatorPosition = 78;
+    public static final double algaeMidPosition = 38;
+    public static final double algaeHighPosition = 51.5;
+    
   }
 
   public static final class ClawConstants {
-    public static final int kClawWheelPort = 999;
-    public static final int kClawRotationPort = 999;
-    public static final double clawWheelSpeed = 0; // Domain is [-1,1]
-    public static final double clawRotationStowedPosition = 0; // TODO: Find this value
-    public static final double clawRotationIntakePosition = 0; // TODO: Find this value
-    public static final double clawRotationHandoffPosition = 0; // TODO: Find this value
-    public static final double clawRotationForwardLimit = 0; // TODO: Find this value
-    public static final double clawRotationReverseLimit = 0; // TODO: Find this value
+    // CAN
+    public static final int kClawWheelPort = 11;
+    public static final int kClawRotationPort = 12;
+
+    // Claw Absolute Encoder positions
+    public static final double clawStowedPosition = 0.45;
+    public static final double clawCoralDepositPosition = 0.182; 
+    public static final double clawAlgaeDepositPosition = 0.3;
+    public static final double clawIntakePosition = 0.385;
+
+    // Claw limits (forward is down, reverse is up)
+    public static final double clawRotationForwardLimit = 0.460;
+    public static final double clawRotationReverseLimit = 0;
     
   }
 
@@ -81,15 +85,15 @@ public final class Constants {
 
     // SPARK MAX CAN IDs
     
-    public static final int kFrontLeftDrivingCanId = 4;
-    public static final int kRearLeftDrivingCanId = 7;
-    public static final int kFrontRightDrivingCanId = 3;
-    public static final int kRearRightDrivingCanId = 9;
+    public static final int kFrontLeftDrivingCanId = 7;
+    public static final int kRearLeftDrivingCanId = 9;
+    public static final int kFrontRightDrivingCanId = 4;
+    public static final int kRearRightDrivingCanId = 3;
 
-    public static final int kFrontLeftTurningCanId = 5;
-    public static final int kRearLeftTurningCanId = 6;
-    public static final int kFrontRightTurningCanId = 2;
-    public static final int kRearRightTurningCanId = 8;
+    public static final int kFrontLeftTurningCanId = 6;
+    public static final int kRearLeftTurningCanId = 8;
+    public static final int kFrontRightTurningCanId = 5;
+    public static final int kRearRightTurningCanId = 2;
 
     // OLD
     /* 
@@ -126,6 +130,7 @@ public final class Constants {
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kSubsystemDriverControllerPort = 1;
     public static final double kDriveDeadband = 0.1;
   }
 
@@ -146,5 +151,16 @@ public final class Constants {
 
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;
+  }
+
+  public static final class AlignmentConstants{
+    public static final double ROT_SETPOINT_REEF_ALIGNMENT = 0.45; // RY
+    public static final double X_SETPOINT_REEF_ALIGNMENT = -.19; // TX
+    public static final double Y_SETPOINT_REEF_ALIGNMENT_LEFT = -0.55; // TY
+    public static final double Y_SETPOINT_REEF_ALIGNMENT_RIGHT = 0; // TY
+    public static final double ROT_TOLERANCE_REEF_ALIGNMENT = 0.02;
+    public static final double X_TOLERANCE_REEF_ALIGNMENT = 0.02;
+    public static final double Y_TOLERANCE_REEF_ALIGNMENT = 0.02;
+    
   }
 }

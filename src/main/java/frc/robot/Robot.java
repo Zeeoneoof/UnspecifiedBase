@@ -37,8 +37,8 @@ public class Robot extends LoggedRobot {
 
     if (isReal()) {
   //    Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
-  //    Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
-  //    new PowerDistribution(1, ModuleType.kRev); // Enables power distribution logging
+      Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
+      new PowerDistribution(1, ModuleType.kRev); // Enables power distribution logging
     } else {
       setUseTiming(false); // Run as fast as possible
   //    String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)
@@ -46,11 +46,10 @@ public class Robot extends LoggedRobot {
   //    Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to a new log
     }
 
+    m_robotContainer = new RobotContainer();
     Logger.start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-
-    m_robotContainer = new RobotContainer();
   }
 
   /**
