@@ -84,7 +84,7 @@ public class PivotSubsystem extends SubsystemBase {
                 case 2: // High
                 return this.runOnce(()->runRotationWithPosition(0.175));
                 case 3: // Special - Trough
-                return this.runOnce(()->runRotationWithPosition(0.225));
+                return this.runOnce(()->runRotationWithPosition(0.213));
                 case 4:
                 return this.runOnce(()->runRotationWithPosition(0.358));
             }
@@ -99,7 +99,7 @@ public class PivotSubsystem extends SubsystemBase {
                 case 3: // Special - Barge
                 return this.runOnce(()->runRotationWithPosition(0.461));
                 case 4:
-                return this.runOnce(()->runRotationWithPosition(0.22));
+                return this.runOnce(()->runRotationWithPosition(0.208));
             }
         }
         

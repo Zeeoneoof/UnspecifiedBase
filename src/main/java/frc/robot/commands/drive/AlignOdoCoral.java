@@ -12,6 +12,7 @@ import java.util.Optional;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.GoalEndState;
+import com.pathplanner.lib.path.IdealStartingState;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 
@@ -44,7 +45,7 @@ public class AlignOdoCoral extends Command {
   public void initialize() {
     Pose2d closestAprilTagPose = getClosestReefAprilTagPose();
     Command pathfindPath = AutoBuilder.pathfindToPose(
-      translateCoord(closestAprilTagPose, closestAprilTagPose.getRotation().getDegrees(), -0.025),
+      translateCoord(closestAprilTagPose, closestAprilTagPose.getRotation().getDegrees(), -0.05),
         new PathConstraints(
             4, 3,
             Units.degreesToRadians(540), Units.degreesToRadians(720)));
@@ -53,10 +54,10 @@ public class AlignOdoCoral extends Command {
       // Load the path you want to follow using its name in the GUI
       PathPlannerPath pathToFront = new PathPlannerPath(
           PathPlannerPath.waypointsFromPoses(
-            translateCoord(closestAprilTagPose, closestAprilTagPose.getRotation().getDegrees(), -0.025),
+            translateCoord(closestAprilTagPose, closestAprilTagPose.getRotation().getDegrees(), -0.05),
               closestAprilTagPose),
           new PathConstraints(4, 3, 2 * Math.PI, 4 * Math.PI),
-          null, 
+          new IdealStartingState(drive.getRobotRelativeSpeeds().vyMetersPerSecond, drive.getPose().getRotation()), 
           new GoalEndState(0.0, closestAprilTagPose.getRotation())
       );
       pathToFront.preventFlipping = true;
@@ -111,7 +112,7 @@ public class AlignOdoCoral extends Command {
     }
 
    Pose2d inFrontOfAprilTag = translateCoord(closestPose, closestPose.getRotation().getDegrees(),
-       -Units.inchesToMeters(23.773));
+       -Units.inchesToMeters(12));
 
 
     Pose2d leftOrRightOfAprilTag;

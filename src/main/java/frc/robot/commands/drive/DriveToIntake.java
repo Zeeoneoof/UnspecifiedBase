@@ -44,7 +44,7 @@ public class DriveToIntake extends Command {
   public void initialize() {
     Pose2d closestAprilTagPose = getClosestIntakeAprilTagPose();
     Command pathfindPath = AutoBuilder.pathfindToPose(
-      translateCoord(closestAprilTagPose, closestAprilTagPose.getRotation().getDegrees(), -0.025),
+      translateCoord(closestAprilTagPose, closestAprilTagPose.getRotation().getDegrees(), -0.5),
         new PathConstraints(
             4, 3,
             Units.degreesToRadians(540), Units.degreesToRadians(720)));
@@ -53,7 +53,7 @@ public class DriveToIntake extends Command {
       // Load the path you want to follow using its name in the GUI
       PathPlannerPath pathToFront = new PathPlannerPath(
           PathPlannerPath.waypointsFromPoses(
-            translateCoord(closestAprilTagPose, closestAprilTagPose.getRotation().getDegrees(), -0.025),
+            translateCoord(closestAprilTagPose, closestAprilTagPose.getRotation().getDegrees(), -0.5),
               closestAprilTagPose),
           new PathConstraints(4, 3, 2 * Math.PI, 4 * Math.PI),
           null, 
@@ -111,7 +111,7 @@ public class DriveToIntake extends Command {
     }
 
    Pose2d inFrontOfAprilTag = translateCoord(closestPose, closestPose.getRotation().getDegrees(),
-       -Units.inchesToMeters(23.773));
+       -Units.inchesToMeters(4));
 
 
     Pose2d leftOrRightOfAprilTag;

@@ -35,6 +35,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.Commands.*;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -70,8 +71,18 @@ public class RobotContainer {
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
+  IntakeWheelAuto spinIntake = new IntakeWheelAuto(m_robotClaw);
+  OuttakeWheelAuto outtakeCoral = new OuttakeWheelAuto(m_robotClaw);
+  private final Command cancelPivotCommand = Commands.runOnce(()->m_robotPivot.getCurrentCommand().cancel());
+  private final Command cancelElevatorCommand = Commands.runOnce(()->m_robotElevator.getCurrentCommand().cancel());
+  private final Command cancelDrivetrainCommand = Commands.runOnce(()->m_robotDrive.getCurrentCommand().cancel());
   public RobotContainer() {
-
+    NamedCommands.registerCommand("StowCommand", Commands.race(m_robotElevator.setElevator(4,2).andThen(m_robotPivot.stowCommand()), Commands.waitSeconds(4)));
+    NamedCommands.registerCommand("ChangeToL4", Commands.race(m_robotElevator.setElevator(3,1).andThen(m_robotPivot.setPivot(3,1)), Commands.waitSeconds(4)));
+    NamedCommands.registerCommand("IntakeCommand", Commands.race(m_robotElevator.setElevator(4,1).andThen(m_robotPivot.setPivot(4,1)), Commands.waitSeconds(4)));
+    NamedCommands.registerCommand("IntakeWheelCommand", spinIntake);
+    NamedCommands.registerCommand("IntakeOuttakeCommand", Commands.race(new OuttakeWheelAuto(m_robotClaw), Commands.waitSeconds(4)));
+    NamedCommands.registerCommand("ChangeToL2", Commands.race(m_robotElevator.setElevator(1,1).andThen(m_robotPivot.setPivot(1,1)), Commands.waitSeconds(2)));
     // Build an auto chooser. This will use Commands.none() as the default option.
     autoChooser = AutoBuilder.buildAutoChooser();
 
@@ -127,7 +138,7 @@ public class RobotContainer {
     m_driverController.a().onTrue(Commands.runOnce(()->m_robotDrive.zeroHeading()));
 
     m_driverController.x().onTrue(new AlignOdoCoral(m_robotDrive,true));
-    m_driverController.leftTrigger().onChange(Commands.runOnce(()->m_robotDrive.drive(0, 0, 0, true),m_robotDrive));
+    m_driverController.leftTrigger().onTrue(cancelDrivetrainCommand);
     m_driverController.b().onTrue(new AlignOdoCoral(m_robotDrive, false));
     m_driverController.y().onTrue(new DriveToIntake(m_robotDrive, false));
 
@@ -136,7 +147,7 @@ public class RobotContainer {
      */
     
      // Limit switch for elevator
-    new Trigger(climberLimitSwitch::get).onTrue(m_robotElevator.resetEncoder().andThen(Commands.waitSeconds(0.5)));
+    new Trigger(climberLimitSwitch::get).onTrue(m_robotElevator.resetEncoder().andThen(Commands.waitSeconds(2)));
 
     // Manual voltage controls for elevator
     // m_subsystemController.y().whileTrue(Commands.runEnd(()->m_robotElevator.runWithVoltage(0.1), ()->m_robotElevator.stopMotor(), m_robotElevator));
@@ -147,6 +158,8 @@ public class RobotContainer {
     /*
      * Coral (LB + Button)
      */
+    
+
     m_subsystemController.x().and(m_subsystemController.leftBumper()).onTrue(m_robotElevator.setElevator(0,1).andThen(m_robotPivot.setPivot(0,1))); // Low
     m_subsystemController.y().and(m_subsystemController.leftBumper()).onTrue(m_robotElevator.setElevator(1,1).andThen(m_robotPivot.setPivot(1,1))); // Mid
     m_subsystemController.b().and(m_subsystemController.leftBumper()).onTrue(m_robotElevator.setElevator(2,1).andThen(m_robotPivot.setPivot(2,1))); // High
@@ -155,6 +168,11 @@ public class RobotContainer {
     /*
      * Algae (RB + Button)
      */
+
+ 
+   
+
+
     m_subsystemController.x().and(m_subsystemController.rightBumper()).onTrue(m_robotElevator.setElevator(0,2).andThen(m_robotPivot.setPivot(0,2))); // Low
     m_subsystemController.y().and(m_subsystemController.rightBumper()).onTrue(m_robotElevator.setElevator(1,2).andThen(m_robotPivot.setPivot(1,2))); // Mid
     m_subsystemController.b().and(m_subsystemController.rightBumper()).onTrue(m_robotElevator.setElevator(2,2).andThen(m_robotPivot.setPivot(2,2))); // High
@@ -178,8 +196,8 @@ public class RobotContainer {
      m_subsystemController.povUp().whileTrue(Commands.runEnd(()->m_robotElevator.manualAdjustmentFunc(1.5),()->Commands.none(),m_robotElevator));
      m_subsystemController.povDown().whileTrue(Commands.runEnd(()->m_robotElevator.manualAdjustmentFunc(-1.5),()->Commands.none(),m_robotElevator));
     // Claw Manual Rotation
-    m_subsystemController.povLeft().whileTrue(Commands.runEnd(()->m_robotPivot.manualAdjustmentFunc(-0.05),()->Commands.none(),m_robotPivot));
-    m_subsystemController.povRight().whileTrue(Commands.runEnd(()->m_robotPivot.manualAdjustmentFunc(0.05),()->Commands.none(),m_robotPivot));
+    m_subsystemController.povLeft().whileTrue(Commands.runEnd(()->m_robotPivot.manualAdjustmentFunc(-0.025/2),()->Commands.none(),m_robotPivot));
+    m_subsystemController.povRight().whileTrue(Commands.runEnd(()->m_robotPivot.manualAdjustmentFunc(0.025/2),()->Commands.none(),m_robotPivot));
     
   }
 

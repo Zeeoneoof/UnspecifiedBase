@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.ClawConstants;
 import frc.robot.Constants.ElevatorConstants;
@@ -37,6 +38,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     private RelativeEncoder elevatorEncoder;
     private SparkClosedLoopController elevatorPIDController;
     public final static CommandXboxController subXboxController = new CommandXboxController(1);
+    private double universalOffset = 3;
 
     // Logical debouncer
     Debouncer m_debouncer = new Debouncer(3,DebounceType.kBoth);
@@ -64,7 +66,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         elevatorConfig.closedLoop.maxMotion
         // Units are in Rotations Per Minute
             .maxVelocity(12*75*4)
-            .maxAcceleration(6*240*2)
+            .maxAcceleration(6*240*1.9)
             .allowedClosedLoopError(0.2); // Rotations
         
         followerConfig
@@ -144,29 +146,29 @@ public class ElevatorSubsystem extends SubsystemBase {
         if (controlType==1){
         switch(mode){
             case 0:
-            return this.runOnce(()->runWithPosition(14+0.3));
+            return this.runOnce(()->runWithPosition(14+0.3+0.8+4));
             case 1:
-            return this.runOnce(()->runWithPosition(37.78+0.3));
+            return this.runOnce(()->runWithPosition(34.38+3));
             case 2:
-            return this.runOnce(()->runWithPosition(58.17+0.3));
+            return this.runOnce(()->runWithPosition(56.39+3));
             case 3:
-            return this.runOnce(()->runWithPosition(83.04));
+            return this.runOnce(()->runWithPosition(85.54));
             case 4:
-            return this.runOnce(()->runWithPosition(27.26));
+            return this.runOnce(()->runWithPosition(27.2));
             
         }
     }   else if (controlType==2){ // Algae Mode
         switch(mode){
             case 0:
-            return this.runOnce(()->runWithPosition(18.85));
+            return this.runOnce(()->runWithPosition(18.85+3));
             case 1:
-            return this.runOnce(()->runWithPosition(46.26));
+            return this.runOnce(()->runWithPosition(46.26+3));
             case 2:
-            return this.runOnce(()->runWithPosition(60));
+            return this.runOnce(()->runWithPosition(61.07+3));
             case 3:
-            return this.runOnce(()->runWithPosition(ElevatorConstants.bargeElevatorPosition));
+            return this.runOnce(()->runWithPosition(ElevatorConstants.bargeElevatorPosition+6));
             case 4:
-            return this.runOnce(()->runWithPosition(0.2));
+            return this.runOnce(()->runWithPosition(6.06));
             
         }
     }
@@ -181,6 +183,9 @@ public class ElevatorSubsystem extends SubsystemBase {
     public Command manualAdjustment(double adjustment){
         double position = elevatorEncoder.getPosition();
         position += adjustment;
+        if (position>85.06){
+            return Commands.none();
+        }
         double finalPosition = position;
         SmartDashboard.putNumber("Manually adjusted position", finalPosition);
         return this.runOnce(()->runWithPosition(finalPosition));
