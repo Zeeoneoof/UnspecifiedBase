@@ -188,7 +188,7 @@ public class DriveSubsystem extends SubsystemBase {
     boolean useMegaTag2 = false; //set to false to use MegaTag1
     boolean doRejectUpdateA = false;
     boolean doRejectUpdateB = false;
-
+    try{
     if(useMegaTag2 == false)
     {
       LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
@@ -266,6 +266,10 @@ public class DriveSubsystem extends SubsystemBase {
       }
 
     }
+  }
+  catch (Exception e){
+    System.err.println("Limelight not initialized or not connected"+e);
+  }
   }
 
 

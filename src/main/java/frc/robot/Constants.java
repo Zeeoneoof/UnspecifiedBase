@@ -8,6 +8,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.AddressableLED;
+import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -162,5 +164,14 @@ public final class Constants {
     public static final double X_TOLERANCE_REEF_ALIGNMENT = 0.02;
     public static final double Y_TOLERANCE_REEF_ALIGNMENT = 0.02;
     
+  }
+
+  public static final class LEDConstants{
+    public static final int kLEDPort = 0;
+    public static final AddressableLED m_led = new AddressableLED(kLEDPort);
+    public static final int kLEDBufferLength = 38; // Number of LEDs in the strip
+    public static final AddressableLEDBuffer m_ledBuffer = new AddressableLEDBuffer(kLEDBufferLength);
+    
+
   }
 }

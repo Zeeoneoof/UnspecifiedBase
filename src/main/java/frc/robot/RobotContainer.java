@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.LEDConstants;
 import frc.robot.Constants.OIConstants;
 
 import frc.robot.commands.drive.AlignOdoCoral;
@@ -107,11 +108,9 @@ public class RobotContainer {
                 -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
                 true),
             m_robotDrive));
-  //  m_robotPivot.setDefaultCommand(m_robotPivot.stowCommand());
-      
-
-    
-
+    LEDConstants.m_led.setLength(LEDConstants.m_ledBuffer.getLength());
+    LEDConstants.m_led.setData(LEDConstants.m_ledBuffer);
+    LEDConstants.m_led.start();
     
     
   }

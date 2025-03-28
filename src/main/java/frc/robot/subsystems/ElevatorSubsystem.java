@@ -15,10 +15,13 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -26,6 +29,7 @@ import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.ClawConstants;
 import frc.robot.Constants.ElevatorConstants;
+import frc.robot.Constants.LEDConstants;
 
 public class ElevatorSubsystem extends SubsystemBase {
 
@@ -137,6 +141,30 @@ public class ElevatorSubsystem extends SubsystemBase {
         runWithPosition(finalPosition);
     }
 
+    public double absDistanceFrom(double a, double b){
+        return Math.abs(a-b);
+    }
+
+    public void setLEDProgress(int mode, double position){
+        LEDPattern baseColorAlgae = LEDPattern.solid(Color.kPaleTurquoise);
+        LEDPattern baseColorCoral = LEDPattern.solid(Color.kWhite);
+        double distanceFrom = absDistanceFrom(position, elevatorEncoder.getPosition());
+        LEDPattern progressBar = LEDPattern.progressMaskLayer(()->MathUtil.clamp(absDistanceFrom(position, elevatorEncoder.getPosition())/distanceFrom,0,1));
+        if (mode == 1){
+            LEDPattern finalPattern = baseColorCoral.mask(progressBar);
+            finalPattern.applyTo(LEDConstants.m_ledBuffer);
+            LEDConstants.m_led.setData(LEDConstants.m_ledBuffer);
+
+        } else {
+            LEDPattern finalPattern = baseColorAlgae.mask(progressBar);
+            finalPattern.applyTo(LEDConstants.m_ledBuffer);
+            LEDConstants.m_led.setData(LEDConstants.m_ledBuffer);
+        }
+
+    }
+
+
+
     /*
      * The elevator position controls
      */
@@ -146,29 +174,39 @@ public class ElevatorSubsystem extends SubsystemBase {
         if (controlType==1){
         switch(mode){
             case 0:
-            return this.runOnce(()->runWithPosition(14+0.3+0.8+4));
+            return this.runOnce(()->runWithPosition(19.1))
+                .alongWith(this.runOnce(()->setLEDProgress(1,19.1)));
             case 1:
-            return this.runOnce(()->runWithPosition(34.38+3));
+            return this.runOnce(()->runWithPosition(37.38))
+                .alongWith(this.runOnce(()->setLEDProgress(1,37.38)));
             case 2:
-            return this.runOnce(()->runWithPosition(56.39+3));
+            return this.runOnce(()->runWithPosition(59.39))
+                .alongWith(this.runOnce(()->setLEDProgress(1,59.39)));
             case 3:
-            return this.runOnce(()->runWithPosition(85.54));
+            return this.runOnce(()->runWithPosition(85.54))
+                .alongWith(this.runOnce(()->setLEDProgress(1,85.54)));
             case 4:
-            return this.runOnce(()->runWithPosition(27.2));
+            return this.runOnce(()->runWithPosition(27.2))
+                .alongWith(this.runOnce(()->setLEDProgress(1,27.2)));
             
         }
     }   else if (controlType==2){ // Algae Mode
         switch(mode){
             case 0:
-            return this.runOnce(()->runWithPosition(18.85+3));
+            return this.runOnce(()->runWithPosition(18.85+3))
+                .alongWith(this.runOnce(()->setLEDProgress(2,18.85+3)));
             case 1:
-            return this.runOnce(()->runWithPosition(46.26+3));
+            return this.runOnce(()->runWithPosition(46.26+3))
+                .alongWith(this.runOnce(()->setLEDProgress(2,46.26+3)));
             case 2:
-            return this.runOnce(()->runWithPosition(61.07+3));
+            return this.runOnce(()->runWithPosition(61.07+3))
+                .alongWith(this.runOnce(()->setLEDProgress(2,61.07+3)));
             case 3:
-            return this.runOnce(()->runWithPosition(ElevatorConstants.bargeElevatorPosition+6));
+            return this.runOnce(()->runWithPosition(ElevatorConstants.bargeElevatorPosition+6))
+                .alongWith(this.runOnce(()->setLEDProgress(2,ElevatorConstants.bargeElevatorPosition+6)));
             case 4:
-            return this.runOnce(()->runWithPosition(6.06));
+            return this.runOnce(()->runWithPosition(6.06))
+                .alongWith(this.runOnce(()->setLEDProgress(2,6.06)));
             
         }
     }
@@ -190,6 +228,8 @@ public class ElevatorSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Manually adjusted position", finalPosition);
         return this.runOnce(()->runWithPosition(finalPosition));
     }
+
+    
 
 
 

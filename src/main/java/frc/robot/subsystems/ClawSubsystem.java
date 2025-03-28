@@ -15,7 +15,11 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.units.TimeUnit;
+import edu.wpi.first.units.Units;
+import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -24,6 +28,7 @@ import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.ClawConstants;
 import frc.robot.Constants.ElevatorConstants;
+import frc.robot.Constants.LEDConstants;
 
 public class ClawSubsystem extends SubsystemBase {
     // TODO: Figure out more complex claw rotation
@@ -76,6 +81,13 @@ public class ClawSubsystem extends SubsystemBase {
      */
     public double getWheelMotorAmps(){
         return m_clawWheelMotor.getOutputCurrent();
+    }
+
+    public void setActiveLED(){
+        LEDPattern base = LEDPattern.solid(LEDConstants.m_ledBuffer.getLED(0));
+        LEDPattern active = base.blink(Units.Seconds.of(.5));
+        active.applyTo(LEDConstants.m_ledBuffer);
+        LEDConstants.m_led.setData(LEDConstants.m_ledBuffer);
     }
 
 
